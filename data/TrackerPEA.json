@@ -1,0 +1,8 @@
+{
+    "returnRate" : 0.1,
+    "entryFee" : 0.03388,
+    "exitFee" : 0.03388,
+    "periodFee" : 0.0038,
+    "finalProfitTax" : 0.172
+
+}
