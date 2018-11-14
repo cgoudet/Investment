@@ -33,3 +33,38 @@ class TestAsset(unittest.TestCase):
         self.assertEqual( len(asset.values), 0 )
 
 
+class TestBrokerContract( unittest.TestCase ) :
+
+    def test_constructor(self) :
+        models.BrokerContract()
+        models.BrokerContract( 1, 1, 1)
+        models.BrokerContract( entry_fee=1, periodic_fee=1, exit_fee=1)
+
+    def test_normalize_weights(self) :
+        bc = models.BrokerContract( entry_fee=0.2 )
+
+        # test no crash
+        bc.normalize_weights()
+
+        # test single entry 
+        bc.add_asset( models.Asset(), 0.5 )
+        bc.normalize_weights()
+        self.assertAlmostEqual( bc.assets[0].weight, 1 )
+
+
+    def test_add_asset( self ) :
+        bc = models.BrokerContract( entry_fee=0.2 )
+
+        bc.add_asset( models.Asset(), 0 )
+        self.assertEqual( len(bc.assets), 0 )
+
+        bc.add_asset( models.Asset(), -1 )
+        self.assertEqual( len(bc.assets), 0 )
+
+        bc.add_asset( models.Asset(), 0.2 )
+        self.assertEqual( len(bc.assets), 1 )
+        self.assertAlmostEqual( bc.assets['weight'].sum(), 0.2 )
+
+        bc.add_asset( models.Asset(), 0.5 )
+        self.assertEqual( len(bc.assets), 2 )
+        self.assertAlmostEqual( bc.assets['weight'].sum(), 0.7 )
