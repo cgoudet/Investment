@@ -1,5 +1,5 @@
 import unittest
-
+import numpy as np
 from .. import models
 
 class TestAsset(unittest.TestCase):
@@ -49,7 +49,12 @@ class TestBrokerContract( unittest.TestCase ) :
         # test single entry 
         bc.add_asset( models.Asset(), 0.5 )
         bc.normalize_weights()
-        self.assertAlmostEqual( bc.assets[0].weight, 1 )
+        np.testing.assert_array_equal( bc.assets['weight'].values, [1])
+
+        # test mutliple entries
+        bc.add_asset( models.Asset(), 1 )
+        bc.normalize_weights()
+        np.testing.assert_array_equal( bc.assets['weight'].values, [0.5, 0.5])
 
 
     def test_add_asset( self ) :
