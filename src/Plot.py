@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def StripString( line, doPrefix = 1, doSuffix = 1 ) :
     if ( line.rfind( '.' ) != -1 and doSuffix ) : line = line[0:line.rfind( '.' )]
@@ -8,7 +9,7 @@ def StripString( line, doPrefix = 1, doSuffix = 1 ) :
 #==========
 def Plot( data, outName, legends, x=None ) :
 
-    if x is None : x = np.range(len(data[0] ))
+    if x is None : x = range(len(data[0] ))
     plt.figure()
     for i, vals in enumerate(data) : plt.plot(x, vals)
     plt.legend(legends)

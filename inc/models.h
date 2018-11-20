@@ -33,6 +33,7 @@ namespace Investment {
     void process_period( double deposit );
     void normalize_weights();
     void add_asset( Asset asset, double weight );
+    unsigned size(){ return m_assets.size(); }
     
   private :
     double m_periodic_fee;

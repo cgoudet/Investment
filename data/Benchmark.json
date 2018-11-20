@@ -1,5 +1,5 @@
 {
-    "initDeposit":0,
-    "periodDeposit":0.3,
+    "initDeposit":5,
+    "periodDeposit":3.6,
     "nPeriod":20
 }

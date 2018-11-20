@@ -4,7 +4,7 @@ import os
 import sys
 
 sys.path.insert(0, sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))))
-from src.Model import InvestModel, Benchmark
+from src.Model import InvestModel, InvestBenchmark
 import src.Plot as plot
 
 def ParseArgs() :
@@ -24,7 +24,7 @@ def ParseArgs() :
 def main() :
     args =ParseArgs()
 
-    benchmark = Benchmark(json.loads(open(args.benchmark).read()))
+    benchmark = InvestBenchmark(json.loads(open(args.benchmark).read()))
     
     evols = [ InvestModel(json.loads(open( model).read())).Evolution(benchmark)
               for model in args.configFiles]

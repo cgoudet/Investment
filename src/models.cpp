@@ -1,5 +1,11 @@
-#include "models.h"
 #include <algorithm>
+#include <numeric>
+#include <iostream>
+
+#include "models.h"
+
+using std::cout;
+using std::endl;
 
 Investment::Asset::Asset( double constant_rate, double constant_fee ) {
   m_constant_rate = std::max(constant_rate, 0.);
@@ -24,16 +30,18 @@ void Investment::BrokerContract::add_asset( Investment::Asset asset, double weig
 
 double Investment::BrokerContract::get_value() {
 
-  double sum = 0;
-  for ( unsigned i_asset=0; i_asset<m_assets.size(); ++i_asset ) {
-    sum += m_assets[i_asset].get_value()*m_weights[i_asset];
-  }
-  
+  double sum = std::accumulate( m_assets.begin(), m_assets.end(), 0.
+				, []( double current_sum, Investment::Asset &asset ) { return current_sum + asset.get_value(); } );
   return sum;
 }
-void Investment::BrokerContract::normalize_weights() {}
+
+void Investment::BrokerContract::normalize_weights() {
+  double total_weight = std::accumulate( m_weights.begin(), m_weights.end(), 0. );
+  std::transform( m_weights.begin(), m_weights.end(), m_weights.begin(), [&]( float v ) { return v/total_weight; } );
+}
 
 void Investment::BrokerContract::process_period( double deposit ) {
+  normalize_weights();
   for ( unsigned i_asset=0; i_asset<m_assets.size(); ++i_asset ) {
     m_assets[i_asset].process_period( deposit * m_weights[i_asset] );
   }
